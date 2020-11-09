@@ -1,0 +1,52 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <h2>{{ listing.listingTitle }}</h2>
+
+    {% if user.id == listing.listedUser.id %}
+        <p>Listed by you</p>
+    {% else %}
+        <p>Listed by {{ listing.listedUser }}</p>
+    {% endif %}
+
+    <p>Category: {{ listing.listingCategory }}</p>
+
+    {% if listing.closed == True %}
+        <h3 >Bidding Closed.</h3>
+        <h3>Final Price: ${{ bidding.price }}</h3>
+    {% else %}
+        <h3>Current Price: ${{ bidding.price }}</h3>
+    {% endif %}
+    {% for list in watchlist %}
+        {% if list.user == user %}
+            <p>Watching</p>
+        {% endif %}
+    {% endfor %}
+    <img src="{{ listing.imageUrl }}" alt="{{ listing.listingTitle }}" width="500px">
+    <p>{{ listing.listingDesc }}</p>
+
+    {% if user.is_authenticated and listing.closed == False %}
+        {% if user.id != listing.listedUser.id %}
+            <a href="{{ listing.listingTitle }}/bid"><h3>Bid</h3></a>
+
+            <form action="{{ show_listing }}" method="post" name="Watchlist">
+                {% csrf_token %}
+                <button type="submit" name="updatedUser" value="{{ user.id }}">Watchlist</button>
+            </form>
+        {% else %}
+            <form action="{{ show_listing }}" method="post" name="close">
+                {% csrf_token %}
+                <button type="submit" name="updatedUser" value="{{ user.id }}">close</button>
+            </form>
+        {% endif %}
+    {% endif %}
+
+    <a class="nav-link" href="/{{ listing.listingTitle }}/comment">Add a Comment</a>
+    {% for comment in comments %}
+        <div>
+            <p><b>{{ comment.user }}</b>: {{ comment.comment }}</p>
+        </div>
+    {% endfor %}
+
+{% endblock %}

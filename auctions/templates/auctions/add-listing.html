@@ -1,0 +1,22 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Add New Listing</h2>
+    {{ user.id }}
+    <form action="add" method="post">
+        {% csrf_token %}
+        Title: <input type="text" name="title" placeholder="title">
+        Category: <select name="category">
+            <option value="household">Home & Kitchin</option>
+            <option value="fasion">Fashion</option>
+            <option value="electronics">Electronics</option>
+            <option value="beauty">Beauty</option>
+            <option value="sports">Sports & Outdoors</option>
+            <option value="other">Other</option>
+        </select>
+        <input type="text" name="description" placeholder="Descrive within 500 words">
+        <input type="text" name="image" placeholder="Input image source">
+        Initial bid:$ <input type="text" name="bidding" placeholder="initial bid">
+        <button type="submit" name="listUser" value="{{ user.id }}">Create Listing</button>
+    </form>
+{% endblock %}

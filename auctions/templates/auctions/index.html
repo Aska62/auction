@@ -1,0 +1,32 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+    <form action="index">
+        <select name="category">
+            <option value="" disabled selected>Select Category</option>
+            <option value="household">Home & Kitchin</option>
+            <option value="fasion">Fashion</option>
+            <option value="electronics">Electronics</option>
+            <option value="beauty">Beauty</option>
+            <option value="sports">Sports & Outdoors</option>
+            <option value="other">Other</option>
+        </select>
+        <button type="submit">Sort by Category</button>
+    </form>
+    {% for listing in listings %}
+        <div class="{{ listing.listingCategory }}">
+            <a href="/{{ listing.listingTitle }}"><h3>{{ listing.listingTitle }}</h3></a>
+            {% for bidding in biddings %}
+                {% if bidding.listing == listing %}
+                    <h4>Current Price: ${{ bidding.price }}</h4>
+                {% endif %}
+            {% endfor %}
+            <a href="/{{ listing.listingTitle }}"><img src="{{ listing.imageUrl }}" alt="{{ listing.listingTitle }}" width="300px"></a>
+            <p>{{list.listDesc }}</p>
+        </div>
+    {% endfor %}
+
+    <script src="/scripts/auctions/index.js"></script>
+
+{% endblock %}

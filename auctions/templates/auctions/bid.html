@@ -1,0 +1,33 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>{{ listing.listingTitle }}</h2>
+
+    {% if user.id == listing.listedUser.id %}
+        <p>Listed by you</p>
+    {% else %}
+        <p>Listed by {{ listing.listedUser }}</p>
+    {% endif %}
+
+    <p>Category: {{ listing.listingCategory }}</p>
+
+    {% if listing.closed == True %}
+        <h3 font-color:"red">Bidding Closed.</h3>
+        <h3>Final Price: ${{ bidding.price }}</h3>
+    {% else %}
+        <h3>Current Price: ${{ bidding.price }}</h3>
+    {% endif %}
+
+    <img src="{{ listing.imageUrl }}" alt="{{ listing.listingTitle }}" width="300px">
+    <p>{{ listing.listingDesc }}</p>
+
+    {% if not user.id == listing.listedUser.id and not listing.closed %}
+        <form action="{{ bid }}" method="post">
+            {% csrf_token %}
+            $<input type="text" name="bidding-price" placeholder="Input Your Price">
+            <button type="submit" name="updatedUser" value="{{ user.id }}">Bid</button>
+        </form>
+        {{ message }}
+    {% endif %}
+
+{% endblock %}

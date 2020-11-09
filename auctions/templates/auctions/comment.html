@@ -1,0 +1,24 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>{{ listing.listingTitle }}</h2>
+
+    {% if user.id == listing.listedUser.id %}
+        <p>Listed by you</p>
+    {% else %}
+        <p>Listed by {{ listing.listedUser }}</p>
+    {% endif %}
+
+    <p>Category: {{ listing.listingCategory }}</p>
+
+    <img src="{{ listing.imageUrl }}" alt="{{ listing.listingTitle }}" width="300px">
+    <p>{{ listing.listingDesc }}</p>
+
+    <form action="{{ comment }}" method="post" name="comment">
+        {% csrf_token %}
+        <textarea name ="comment-text" columns=500 rows=4 placeholder="Comment"></textarea>
+        <button type="submit"  name="commented-user" value="{{ user.id }}">Submit</button>
+    </form>
+
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Your Watchlist</h2>
+    {% for item in watchlist %}
+
+        {% for listing in listings %}
+            {% if item.listing == listing %}
+                <a href="/{{ listing.listingTitle }}"><h3>{{ listing.listingTitle }}</h3></a> <h4>by {{ listing.listedUser }}</h4>
+                <a href="/{{ listing.listingTitle }}"><img src="{{ listing.imageUrl }}" alt="{{ listing.listingTitle }}" width="300px"></a>
+                <p>Category: {{ listing.category }}</p>
+            {% endif %}
+        {% endfor %}
+        {% for bidding in biddings %}
+            {% if item == bidding.listing %}
+                <h3>Current Price: ${{ bidding.price }}</h3>
+                <h3>Current Winner: {{ bidding.user.username }}</h3>
+            {% endif %}
+        {% endfor %}
+
+    {% endfor %}
+
+{% endblock %}
